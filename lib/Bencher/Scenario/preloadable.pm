@@ -7,18 +7,24 @@ use 5.010001;
 use strict;
 use warnings;
 
-use B::Hooks::AtRuntime;
+sub _uses_require {
+    require strict;
+}
+
+sub _uses_preloadable {
+    use preloadable "strict";
+}
 
 our $scenario = {
     summary => 'Benchmark preloadable.pm',
     participants => [
         {
             name => 'require',
-            code_template => 'require strict',
+            fcall_template => "Bencher::Scenario::preloadable::_uses_require",
         },
         {
             name => 'preloadable',
-            code => sub { use preloadable "strict" },
+            fcall_template => "Bencher::Scenario::preloadable::_uses_preloadable",
         },
     ],
 };
